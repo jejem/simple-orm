@@ -1,0 +1,16 @@
+{
+	"name": "phyrexia/orm",
+	"type": "library",
+	"description": "PHP class for an easy to use ORM",
+	"keywords": ["orm"],
+	"authors": [{"name": "Jérémy 'Jejem' Desvages", "email": "jejem@phyrexia.org"}],
+	"license": "MIT",
+	"version": "1.0.0",
+	"require": {
+		"php": ">=5",
+		"phyrexia/sql": "^1.0"
+	},
+	"autoload": {
+		"psr-4": {"Phyrexia\\ORM\\": ""}
+	}
+}
