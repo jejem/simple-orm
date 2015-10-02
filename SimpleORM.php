@@ -14,7 +14,6 @@ use Phyrexia\SQL\SimpleSQL;
 
 abstract class SimpleORM {
 	protected static $table;
-	protected static $cachePrefix;
 
 	public static function load($id) {
 		$that = get_called_class();
