@@ -38,9 +38,10 @@ abstract class SimpleORM {
 
 		$SQL = SimpleSQL::getInstance();
 
-		if (is_null($this->id) || (int)$this->id === 0 || ! $that::exists($this->id)) {
-			$SQL->doQuery('INSERT INTO @1 (@2) VALUES (%3)', $that::$table, 'id', '');
-			$this->id = $SQL->insertID();
+		if (is_null($this->id) || ! $that::exists($this->id)) {
+			$SQL->doQuery('INSERT INTO @1 (@2) VALUES (%3)', $that::$table, 'id', ((! is_null($this->id))?$this->id:''));
+			if (is_null($this->id))
+				$this->id = $SQL->insertID();
 		}
 
 		$SQL->doQuery('SHOW COLUMNS FROM @1', $that::$table);
