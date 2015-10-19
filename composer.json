@@ -11,6 +11,6 @@
 		"phyrexia/sql": "^1.0"
 	},
 	"autoload": {
-		"psr-4": {"Phyrexia\\ORM\\": ""}
+		"psr-4": {"Phyrexia\\ORM\\": "src/"}
 	}
 }
