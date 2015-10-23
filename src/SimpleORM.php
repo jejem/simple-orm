@@ -11,12 +11,21 @@
 namespace Phyrexia\ORM;
 
 use Phyrexia\SQL\SimpleSQL;
+use StarterKit\Cache\Memcached;
 
 abstract class SimpleORM {
 	protected static $table;
+	public static $mc;
 
 	public static function load($id) {
 		$that = get_called_class();
+
+		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached') {
+			$ret = self::$mc->get($that.'_'.$that::$table.'_'.$id);
+
+			if ($ret && is_object($ret) && get_class($ret) == $that)
+				return $ret;
+		}
 
 		$SQL = SimpleSQL::getInstance();
 
@@ -29,6 +38,9 @@ abstract class SimpleORM {
 		$object = new $that();
 		foreach ($row as $k => $v)
 			$object->$k = $v;
+
+		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
+			self::$mc->add($that.'_'.$that::$table.'_'.$id, $object);
 
 		return $object;
 	}
@@ -52,6 +64,9 @@ abstract class SimpleORM {
 			$elements[] = '`'.mysqli_real_escape_string($SQL->getLink(), $row['Field']).'`="'.mysqli_real_escape_string($SQL->getLink(), $this->$row['Field']).'"';
 
 		$SQL->doQuery('UPDATE @1 SET '.implode(',', $elements).' WHERE @2 = %3 LIMIT 1', $that::$table, 'id', $this->id);
+
+		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
+			self::$mc->set($that.'_'.$that::$table.'_'.$this->id, $this);
 
 		return $this;
 	}
@@ -77,6 +92,9 @@ abstract class SimpleORM {
 		$SQL = SimpleSQL::getInstance();
 
 		$SQL->doQuery('DELETE FROM @1 WHERE @2 = %3 LIMIT 1', $that::$table, 'id', $this->id);
+
+		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
+			self::$mc->delete($that.'_'.$that::$table.'_'.$this->id);
 
 		return true;
 	}
