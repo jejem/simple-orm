@@ -8,7 +8,8 @@
 	"version": "1.1.0",
 	"require": {
 		"php": ">=5",
-		"phyrexia/sql": "^1.0"
+		"phyrexia/sql": "^1.0",
+		"starter-kit/cache": "^1.0"
 	},
 	"autoload": {
 		"psr-4": {"Phyrexia\\ORM\\": "src/"}
