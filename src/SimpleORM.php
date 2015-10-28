@@ -11,7 +11,6 @@
 namespace Phyrexia\ORM;
 
 use Phyrexia\SQL\SimpleSQL;
-use StarterKit\Cache\Memcached;
 
 abstract class SimpleORM {
 	protected static $table;
