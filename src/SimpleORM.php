@@ -35,8 +35,15 @@ abstract class SimpleORM {
 		$row = $SQL->fetchResult();
 
 		$object = new $that();
-		foreach ($row as $k => $v)
+		foreach ($row as $k => $v) {
+			if ((substr($v, 0, 1) == '[' && substr($v, -1) == ']') || (substr($v, 0, 1) == '{' && substr($v, -1) == '}')) {
+				$buf = json_decode($v, true);
+				if (is_array($buf))
+					$v = $buf;
+			}
+
 			$object->$k = $v;
+		}
 
 		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
 			self::$mc->add($that.'_'.$that::$table.'_'.$id, $object);
@@ -59,8 +66,18 @@ abstract class SimpleORM {
 		$rows = $SQL->fetchAllResults();
 
 		$elements = array();
-		foreach ($rows as $row)
-			$elements[] = '`'.mysqli_real_escape_string($SQL->getLink(), $row['Field']).'`="'.mysqli_real_escape_string($SQL->getLink(), $this->$row['Field']).'"';
+		foreach ($rows as $row) {
+			$k = $row['Field'];
+			$v = $this->$k;
+
+			if (is_array($v)) {
+				$buf = json_encode($v);
+				if ($buf !== false)
+					$v = $buf;
+			}
+
+			$elements[] = '`'.mysqli_real_escape_string($SQL->getLink(), $k).'`="'.mysqli_real_escape_string($SQL->getLink(), $v).'"';
+		}
 
 		$SQL->doQuery('UPDATE @1 SET '.implode(',', $elements).' WHERE @2 = %3 LIMIT 1', $that::$table, 'id', $this->id);
 
