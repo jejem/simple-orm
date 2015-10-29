@@ -38,7 +38,10 @@ abstract class SimpleORM {
 
 		$object = new $that();
 		foreach ($row as $k => $v) {
-			if ((substr($v, 0, 1) == '[' && substr($v, -1) == ']') || (substr($v, 0, 1) == '{' && substr($v, -1) == '}')) {
+			if (preg_match('/^(?:[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2})|(?:[0-9]{4}-[0-9]{2}-[0-9]{2})|(?:[0-9]{2}:[0-9]{2}:[0-9]{2})$/', $v) == 1)
+				$v = new \DateTime($v);
+
+			if (is_string($v) && ((substr($v, 0, 1) == '[' && substr($v, -1) == ']') || (substr($v, 0, 1) == '{' && substr($v, -1) == '}'))) {
 				$buf = json_decode($v, true);
 				if (is_array($buf))
 					$v = $buf;
@@ -71,6 +74,21 @@ abstract class SimpleORM {
 		foreach ($rows as $row) {
 			$k = $row['Field'];
 			$v = $this->$k;
+
+			if ($v instanceof \DateTime || $v instanceof \DateTimeInterface) {
+				switch ($row['Type']) {
+					case 'datetime':
+					case 'timestamp':
+						$v = $v->format('Y-m-d H:i:s');
+						break;
+					case 'date':
+						$v = $v->format('Y-m-d');
+						break;
+					case 'time':
+						$v = $v->format('H:i:s');
+						break;
+				}
+			}
 
 			if (is_array($v)) {
 				$buf = json_encode($v);
