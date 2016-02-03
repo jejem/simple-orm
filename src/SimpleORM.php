@@ -134,4 +134,20 @@ abstract class SimpleORM {
 
 		return true;
 	}
+
+	public static function loadAll() {
+		$that = get_called_class();
+
+		$SQL = SimpleSQL::getInstance();
+
+		$SQL->doQuery('SELECT @1 FROM @2', 'id', $that::$table);
+
+		$rows = $SQL->fetchAllResults();
+
+		$ret = array();
+		foreach ($rows as $row)
+			$ret[] = $that::load($row['id']);
+
+		return $ret;
+	}
 }
