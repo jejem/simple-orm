@@ -139,7 +139,7 @@ abstract class SimpleORM {
 
 		$SQL = SimpleSQL::getInstance();
 
-		$SQL->doQuery('SELECT @1 FROM @2', 'id', $that::$table);
+		$SQL->doQuery('SELECT @1 FROM @2 ORDER BY @1 ASC', 'id', $that::$table);
 
 		$rows = $SQL->fetchAllResults();
 
