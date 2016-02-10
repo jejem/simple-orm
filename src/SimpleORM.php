@@ -51,7 +51,7 @@ abstract class SimpleORM {
 		}
 
 		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
-			self::$mc->add($that.'_'.$that::$table.'_'.$id, $object);
+			self::$mc->add($that.'_'.$that::$table.'_'.$id, $object, 300);
 
 		return $object;
 	}
@@ -102,7 +102,7 @@ abstract class SimpleORM {
 		$SQL->doQuery('UPDATE @1 SET '.implode(',', $elements).' WHERE @2 = %3 LIMIT 1', $that::$table, 'id', $this->id);
 
 		if (isset(self::$mc) && is_object(self::$mc) && get_class(self::$mc) == 'Memcached')
-			self::$mc->set($that.'_'.$that::$table.'_'.$this->id, $this);
+			self::$mc->set($that.'_'.$that::$table.'_'.$this->id, $this, 300);
 
 		return $this;
 	}
