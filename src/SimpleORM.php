@@ -12,8 +12,6 @@ namespace Phyrexia\ORM;
 use Phyrexia\SQL\SimpleSQL;
 
 abstract class SimpleORM {
-	use \Psr\Log\LoggerAwareTrait;
-
 	protected static $table;
 	public static $mc;
 

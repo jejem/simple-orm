@@ -8,8 +8,7 @@
 	"version": "1.5.1",
 	"require": {
 		"php": ">=5.3",
-		"phyrexia/sql": "^1.0",
-		"phyrexia/log": "^2.0"
+		"phyrexia/sql": "^1.0"
 	},
 	"suggest": {
 		"starter-kit/cache": "Allows object caching to reduce SQL server load"
