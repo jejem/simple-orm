@@ -10,6 +10,9 @@
 		"php": ">=5.3",
 		"phyrexia/sql": "^1.0"
 	},
+	"suggest": {
+		"phyrexia/cache": "PHP classes for caching singletons"
+	},
 	"autoload": {
 		"psr-4": {"Phyrexia\\ORM\\": "src/"}
 	}
