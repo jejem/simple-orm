@@ -1,17 +1,20 @@
 <?php
 
 /**
- * ORM/SimpleORMException.php
+ * ORM/SimpleORM.php
  *
  * @author Jérémy 'Jejem' Desvages <jejem@phyrexia.org>
  * @copyright Jérémy 'Jejem' Desvages
  * @license The MIT License (MIT)
-**/
+ **/
 
 namespace Phyrexia\ORM;
 
-use Exception;
-
-class SimpleORMException extends Exception
+interface SimpleORMInterface
 {
+    public static function load($id): ?self;
+
+    public function save(): ?self;
+
+    public function delete(): bool;
 }
