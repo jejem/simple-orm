@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ORM/SimpleORM.php
+ * ORM/SimpleORMInterface.php
  *
  * @author Jérémy 'Jejem' Desvages <jejem@phyrexia.org>
  * @copyright Jérémy 'Jejem' Desvages
